@@ -1,0 +1,1538 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>InsuranceAutoCar – Senior Auto Insurance Check</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <style>
+    :root {
+      --primary: #0052ff;
+      --primary-soft: #e7efff;
+      --accent: #ff8a00;
+      --bg: #f5f7ff;
+      --text-main: #141a33;
+      --text-soft: #6c7285;
+      --border-soft: #dde3f0;
+      --success: #16a34a;
+      --error: #dc2626;
+      --radius-lg: 18px;
+      --shadow-soft: 0 18px 45px rgba(15, 23, 42, 0.08);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+        sans-serif;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text-main);
+      min-height: 100vh;
+    }
+
+    a {
+      color: var(--primary);
+      text-decoration: none;
+    }
+
+    header {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 20px 16px 8px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 800;
+      font-size: 20px;
+      letter-spacing: 0.03em;
+    }
+
+    .logo-mark {
+      width: 28px;
+      height: 28px;
+      border-radius: 9px;
+      background: var(--primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 18px;
+      box-shadow: 0 10px 18px rgba(37, 99, 235, 0.4);
+    }
+
+    .logo span:nth-child(2) {
+      color: var(--primary);
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-left: auto;
+      flex-wrap: wrap;
+    }
+
+    .btn-primary,
+    .btn-outline {
+      border-radius: 999px;
+      padding: 10px 22px;
+      border: none;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: transform 0.08s ease, box-shadow 0.08s ease,
+        background 0.12s ease, color 0.12s ease;
+      white-space: nowrap;
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: #fff;
+      box-shadow: 0 14px 30px rgba(37, 99, 235, 0.35);
+    }
+    .btn-primary:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 18px 40px rgba(37, 99, 235, 0.45);
+    }
+
+    .btn-outline {
+      border: 1px solid var(--border-soft);
+      background: #fff;
+      color: var(--text-main);
+    }
+    .btn-outline:hover {
+      background: var(--primary-soft);
+    }
+
+    /* Layout principal: dos columnas en escritorio */
+    main {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 24px 16px 40px;
+      display: grid;
+      grid-template-columns: minmax(0, 1.4fr) minmax(0, 1.1fr);
+      gap: 28px;
+      align-items: flex-start;
+    }
+
+    .hero-section {
+      order: 1;
+    }
+
+    .card-section {
+      order: 2;
+      width: 100%;
+    }
+
+    /* RESPONSIVE: una columna, tarjeta primero y hero debajo */
+    @media (max-width: 880px) {
+      main {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .card-section {
+        order: 1;
+      }
+
+      .hero-section {
+        order: 2;
+      }
+
+      header {
+        align-items: flex-start;
+      }
+
+      .header-actions {
+        width: 100%;
+        justify-content: flex-end;
+      }
+    }
+
+    @media (max-width: 540px) {
+      .header-actions {
+        justify-content: flex-start;
+      }
+
+      .header-actions .btn-primary,
+      .header-actions .btn-outline {
+        padding: 8px 14px;
+        font-size: 12px;
+      }
+    }
+
+    .hero-title {
+      font-size: clamp(30px, 5vw, 42px);
+      line-height: 1.1;
+      margin-bottom: 16px;
+    }
+
+    .hero-title span {
+      display: block;
+    }
+
+    .hero-subtitle {
+      font-size: 16px;
+      color: var(--text-soft);
+      margin-bottom: 24px;
+      max-width: 440px;
+    }
+
+    .hero-highlight {
+      font-weight: 700;
+      color: var(--primary);
+    }
+
+    .rating-row {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: #fff;
+      border-radius: 999px;
+      padding: 8px 12px;
+      box-shadow: var(--shadow-soft);
+      font-size: 14px;
+      margin-bottom: 20px;
+    }
+
+    .rating-icon {
+      width: 20px;
+      height: 20px;
+      border-radius: 999px;
+      background: #dcfce7;
+      color: var(--success);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+    }
+
+    .avatars {
+      display: flex;
+      align-items: center;
+      margin-left: 6px;
+    }
+
+    .avatar {
+      width: 24px;
+      height: 24px;
+      border-radius: 999px;
+      border: 2px solid #fff;
+      background: linear-gradient(135deg, #f97316, #ec4899);
+      margin-left: -6px;
+    }
+
+    .avatar:nth-child(2) {
+      background: linear-gradient(135deg, #22c55e, #0ea5e9);
+    }
+
+    .avatar:nth-child(3) {
+      background: linear-gradient(135deg, #eab308, #6366f1);
+    }
+
+    .avatar-count {
+      width: 24px;
+      height: 24px;
+      border-radius: 999px;
+      border: 2px solid #fff;
+      background: #e5e7eb;
+      margin-left: -6px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 10px;
+      color: #4b5563;
+      font-weight: 600;
+    }
+
+    .security-banner {
+      display: flex;
+      gap: 12px;
+      margin-top: 16px;
+      align-items: flex-start;
+    }
+
+    .security-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
+      background: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 10px 22px rgba(148, 163, 184, 0.35);
+      flex-shrink: 0;
+    }
+
+    .lock-symbol {
+      width: 22px;
+      height: 22px;
+      border: 2px solid var(--primary);
+      border-radius: 7px;
+      position: relative;
+    }
+
+    .lock-symbol::before {
+      content: "";
+      position: absolute;
+      width: 10px;
+      height: 6px;
+      border-radius: 999px;
+      border: 2px solid var(--primary);
+      border-bottom: none;
+      top: -7px;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    .security-text h3 {
+      font-size: 14px;
+      margin-bottom: 4px;
+    }
+    .security-text p {
+      font-size: 13px;
+      color: var(--text-soft);
+      line-height: 1.4;
+    }
+
+    /* RESEÑAS */
+    .reviews-section {
+      margin-top: 24px;
+    }
+
+    .reviews-title {
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-soft);
+      margin-bottom: 8px;
+    }
+
+    .reviews-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    @media (max-width: 880px) {
+      .reviews-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .review-card {
+      background: #fff;
+      border-radius: 18px;
+      padding: 12px 12px 14px;
+      box-shadow: var(--shadow-soft);
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .review-header {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .review-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 999px;
+      overflow: hidden;
+      flex-shrink: 0;
+      border: 2px solid #fff;
+      box-shadow: 0 6px 16px rgba(15, 23, 42, 0.18);
+    }
+
+    .review-avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .review-name {
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .review-meta {
+      font-size: 11px;
+      color: var(--text-soft);
+    }
+
+    .review-stars {
+      font-size: 13px;
+      color: #facc15;
+      margin-top: 2px;
+    }
+
+    .review-text {
+      font-size: 13px;
+      color: var(--text-soft);
+      line-height: 1.5;
+    }
+
+    .review-text strong {
+      color: var(--text-main);
+    }
+
+    /* Card derecha */
+    .card {
+      background: #fff;
+      border-radius: 24px;
+      box-shadow: var(--shadow-soft);
+      padding: 22px 20px 18px;
+    }
+
+    .card-heading {
+      font-weight: 700;
+      margin-bottom: 8px;
+      font-size: 18px;
+    }
+
+    .step-indicator {
+      font-size: 12px;
+      color: var(--text-soft);
+      margin-bottom: 16px;
+    }
+
+    .field-group {
+      margin-bottom: 14px;
+    }
+
+    label {
+      display: block;
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 5px;
+      color: var(--text-soft);
+    }
+
+    .input-wrapper {
+      position: relative;
+    }
+
+    input[type="text"],
+    input[type="date"],
+    input[type="email"],
+    input[type="tel"],
+    select {
+      width: 100%;
+      padding: 11px 12px;
+      padding-right: 38px;
+      border-radius: 12px;
+      border: 1px solid var(--border-soft);
+      font-size: 14px;
+      outline: none;
+      transition: border 0.12s ease, box-shadow 0.12s ease, background 0.12s;
+      background: #f9fafb;
+      appearance: none;
+    }
+
+    select {
+      padding-right: 32px;
+      background-image: linear-gradient(45deg, transparent 50%, #9ca3af 50%),
+        linear-gradient(135deg, #9ca3af 50%, transparent 50%);
+      background-position: calc(100% - 16px) 50%, calc(100% - 12px) 50%;
+      background-size: 6px 6px, 6px 6px;
+      background-repeat: no-repeat;
+    }
+
+    input[type="text"]:focus,
+    input[type="date"]:focus,
+    input[type="email"]:focus,
+    input[type="tel"]:focus,
+    select:focus {
+      border-color: var(--primary);
+      background: #fff;
+      box-shadow: 0 0 0 1px rgba(37, 99, 235, 0.18);
+    }
+
+    input.error,
+    select.error,
+    input[type="date"].error,
+    input[type="email"].error,
+    input[type="tel"].error {
+      border-color: var(--error);
+      box-shadow: 0 0 0 1px rgba(220, 38, 38, 0.2);
+    }
+
+    .input-icon {
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 16px;
+      opacity: 0.48;
+    }
+
+    .helper {
+      font-size: 12px;
+      color: var(--text-soft);
+      margin-top: 4px;
+    }
+
+    .error-text {
+      font-size: 12px;
+      color: var(--error);
+      margin-top: 4px;
+      display: none;
+    }
+
+    .trust-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 16px;
+      font-size: 12px;
+      color: var(--text-soft);
+      flex-wrap: wrap;
+    }
+
+    .trust-row span {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .trust-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: var(--success);
+      box-shadow: 0 0 0 6px rgba(34, 197, 94, 0.28);
+    }
+
+    .btn-submit {
+      margin-top: 18px;
+      width: 100%;
+      justify-content: center;
+      background: linear-gradient(135deg, var(--accent), #ffb200);
+      box-shadow: 0 16px 35px rgba(248, 150, 30, 0.45);
+    }
+
+    .btn-submit:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 20px 45px rgba(248, 150, 30, 0.55);
+    }
+
+    .btn-back {
+      margin-top: 8px;
+      width: 100%;
+      justify-content: center;
+      background: #fff;
+      border: 1px solid var(--border-soft);
+      box-shadow: none;
+      color: var(--text-soft);
+      font-size: 13px;
+    }
+
+    .btn-back:hover {
+      background: var(--primary-soft);
+      color: var(--text-main);
+    }
+
+    /* form steps */
+    .form-step {
+      display: none;
+      animation: fadeStep 0.18s ease-out;
+    }
+
+    .form-step.active {
+      display: block;
+    }
+
+    @keyframes fadeStep {
+      from {
+        opacity: 0;
+        transform: translateY(4px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* zonas de políticas y logos */
+    .policies {
+      margin-top: 20px;
+      padding-top: 14px;
+      border-top: 1px dashed var(--border-soft);
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      gap: 10px;
+      align-items: center;
+    }
+
+    @media (max-width: 600px) {
+      .policies {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .policies-text {
+      font-size: 11px;
+      color: var(--text-soft);
+      line-height: 1.5;
+    }
+
+    .policies-text strong {
+      color: var(--text-main);
+    }
+
+    .logos-row {
+      display: flex;
+      justify-content: flex-end;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .logo-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 9px;
+      border-radius: 999px;
+      border: 1px solid var(--border-soft);
+      font-size: 10px;
+      background: #f9fafb;
+    }
+
+    .mini-logo {
+      width: 16px;
+      height: 16px;
+      border-radius: 999px;
+      border: 2px solid var(--primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 9px;
+      color: var(--primary);
+    }
+
+    .mini-logo.grey {
+      border-color: #9ca3af;
+      color: #6b7280;
+    }
+
+    .mini-logo.green {
+      border-color: #16a34a;
+      color: #16a34a;
+    }
+
+    /* mensaje de estado */
+    .status-box {
+      margin-top: 16px;
+      padding: 10px 12px;
+      border-radius: 14px;
+      background: #f9fafb;
+      border: 1px dashed var(--border-soft);
+      font-size: 13px;
+      color: var(--text-soft);
+    }
+
+    .status-box strong {
+      color: var(--text-main);
+    }
+
+    /* snackbar de resultado */
+    .snackbar {
+      position: fixed;
+      left: 50%;
+      bottom: 28px;
+      transform: translateX(-50%) translateY(120%);
+      padding: 12px 18px;
+      border-radius: 999px;
+      background: #16a34a;
+      color: #fff;
+      font-size: 14px;
+      box-shadow: 0 18px 45px rgba(22, 163, 74, 0.45);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      z-index: 50;
+      opacity: 0;
+      transition: opacity 0.28s ease, transform 0.28s ease;
+    }
+
+    .snackbar.error {
+      background: #dc2626;
+      box-shadow: 0 18px 45px rgba(220, 38, 38, 0.45);
+    }
+
+    .snackbar.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0%);
+    }
+
+    .snackbar-icon {
+      width: 18px;
+      height: 18px;
+      border-radius: 999px;
+      border: 2px solid rgba(255, 255, 255, 0.8);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+    }
+
+    footer {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 8px 16px 24px;
+      font-size: 11px;
+      color: var(--text-soft);
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <div class="logo">
+      <div class="logo-mark">I</div>
+      <span>Insurance</span><span>AutoCar</span>
+    </div>
+
+    <div class="header-actions">
+      <button class="btn-outline" type="button">
+        🔒 Policy Holder Login
+      </button>
+      <button class="btn-primary" type="button">
+        Get My Quote
+      </button>
+    </div>
+  </header>
+
+  <main>
+    <!-- Card (form) -->
+    <section class="card-section">
+      <div class="card">
+        <div class="card-heading">
+          Check Your Senior Auto Insurance Savings
+        </div>
+        <div class="step-indicator" id="step-indicator">
+          Step 1 of 8 · Start with your vehicle details
+        </div>
+
+        <form id="insurance-form" novalidate>
+          <!-- STEP 1 -->
+          <div class="form-step active" data-step="1">
+            <div class="field-group">
+              <label for="zip">Zip Code</label>
+              <div class="input-wrapper">
+                <input
+                  id="zip"
+                  name="zip"
+                  type="text"
+                  inputmode="numeric"
+                  maxlength="5"
+                  placeholder="Enter your ZIP code"
+                  required
+                />
+                <span class="input-icon">📍</span>
+              </div>
+              <div class="helper">
+                We use your ZIP to find accurate local rates.
+              </div>
+              <div class="error-text">
+                Please enter a valid 5-digit ZIP code.
+              </div>
+            </div>
+
+            <div class="field-group">
+              <label for="year">What is your vehicle year?</label>
+              <div class="input-wrapper">
+                <select id="year" name="year" required>
+                  <option value="">Select year (1987 – 2025)</option>
+                </select>
+                <span class="input-icon">🚗</span>
+              </div>
+              <div class="helper">
+                Vehicles from 1987 to 2025 are eligible.
+              </div>
+              <div class="error-text">
+                Please select your vehicle year.
+              </div>
+            </div>
+          </div>
+
+          <!-- STEP 2 -->
+          <div class="form-step" data-step="2">
+            <div class="field-group">
+              <label for="make">What is your vehicle make?</label>
+              <div class="input-wrapper">
+                <select id="make" name="make" required>
+                  <option value="">Select your vehicle make</option>
+                  <option value="BMW">BMW</option>
+                  <option value="Chevrolet">Chevrolet</option>
+                  <option value="Ford">Ford</option>
+                  <option value="GMC">GMC</option>
+                  <option value="Honda">Honda</option>
+                  <option value="Hyundai">Hyundai</option>
+                  <option value="Jeep">Jeep</option>
+                  <option value="Kia">Kia</option>
+                  <option value="Nissan">Nissan</option>
+                  <option value="Subaru">Subaru</option>
+                  <option value="Toyota">Toyota</option>
+                </select>
+                <span class="input-icon">🚙</span>
+              </div>
+              <div class="helper">
+                We support most major makes. Choose the closest if needed.
+              </div>
+              <div class="error-text">
+                Please select your vehicle make.
+              </div>
+            </div>
+
+            <div class="field-group">
+              <label for="model" id="model-label">What is the model of your BMW?</label>
+              <div class="input-wrapper">
+                <input
+                  id="model"
+                  name="model"
+                  type="text"
+                  placeholder="e.g. 3 Series, Civic, Camry..."
+                  required
+                />
+                <span class="input-icon">🔤</span>
+              </div>
+              <div class="helper">
+                The exact model helps find more precise rates.
+              </div>
+              <div class="error-text">
+                Please enter your vehicle model.
+              </div>
+            </div>
+          </div>
+
+          <!-- STEP 3 -->
+          <div class="form-step" data-step="3">
+            <div class="field-group">
+              <label>Add second vehicle?</label>
+              <div class="input-wrapper">
+                <select id="second-vehicle" name="secondVehicle" required>
+                  <option value="">Select an option</option>
+                  <option value="no">No</option>
+                  <option value="yes">Yes, I have a second vehicle</option>
+                </select>
+                <span class="input-icon">➕</span>
+              </div>
+              <div class="helper">
+                Insuring more than one vehicle can sometimes unlock extra savings.
+              </div>
+              <div class="error-text">
+                Please select an option.
+              </div>
+            </div>
+
+            <div class="field-group">
+              <label for="policy-expire">When does your current policy expire?</label>
+              <div class="input-wrapper">
+                <input
+                  id="policy-expire"
+                  name="policyExpire"
+                  type="date"
+                  required
+                />
+                <span class="input-icon">📅</span>
+              </div>
+              <div class="helper">
+                If you’re not sure of the exact day, choose your best estimate.
+              </div>
+              <div class="error-text">
+                Please provide your policy expiration date.
+              </div>
+            </div>
+          </div>
+
+          <!-- STEP 4 -->
+          <div class="form-step" data-step="4">
+            <div class="field-group">
+              <label for="coverage-length">How long have you continuously had coverage?</label>
+              <div class="input-wrapper">
+                <select id="coverage-length" name="coverageLength" required>
+                  <option value="">Select an option</option>
+                  <option value="<6">Less than 6 months</option>
+                  <option value="6-12">6 – 12 months</option>
+                  <option value="1-3">1 – 3 years</option>
+                  <option value="3+">More than 3 years</option>
+                  <option value="none">I currently have no coverage</option>
+                </select>
+                <span class="input-icon">⏱</span>
+              </div>
+              <div class="helper">
+                Longer continuous coverage can sometimes mean better rates.
+              </div>
+              <div class="error-text">
+                Please select your coverage history.
+              </div>
+            </div>
+
+            <div class="field-group">
+              <label for="provider">Current auto insurance provider</label>
+              <div class="input-wrapper">
+                <select id="provider" name="provider" required>
+                  <option value="">Select your current provider</option>
+                  <option value="geico">GEICO</option>
+                  <option value="progressive">Progressive</option>
+                  <option value="statefarm">State Farm</option>
+                  <option value="allstate">Allstate</option>
+                  <option value="usaa">USAA</option>
+                  <option value="farmers">Farmers</option>
+                  <option value="liberty">Liberty Mutual</option>
+                  <option value="other">Other</option>
+                  <option value="none">I don’t have insurance now</option>
+                </select>
+                <span class="input-icon">🏢</span>
+              </div>
+              <div class="helper">
+                This won’t affect your current policy – we won’t cancel anything.
+              </div>
+              <div class="error-text">
+                Please select your current provider.
+              </div>
+            </div>
+          </div>
+
+          <!-- STEP 5 -->
+          <div class="form-step" data-step="5">
+            <div class="field-group">
+              <label for="gender">Gender</label>
+              <div class="input-wrapper">
+                <select id="gender" name="gender" required>
+                  <option value="">Select your gender</option>
+                  <option value="female">Female</option>
+                  <option value="male">Male</option>
+                  <option value="other">Other / Prefer to self-describe</option>
+                  <option value="na">Prefer not to say</option>
+                </select>
+                <span class="input-icon">👤</span>
+              </div>
+              <div class="helper">
+                Used only where allowed and never shared with third parties.
+              </div>
+              <div class="error-text">
+                Please select an option.
+              </div>
+            </div>
+
+            <div class="field-group">
+              <label for="married">Are you married?</label>
+              <div class="input-wrapper">
+                <select id="married" name="married" required>
+                  <option value="">Select an option</option>
+                  <option value="yes">Yes</option>
+                  <option value="no">No</option>
+                  <option value="widowed">Widowed</option>
+                  <option value="divorced">Divorced</option>
+                </select>
+                <span class="input-icon">💍</span>
+              </div>
+              <div class="helper">
+                Some insurers offer different rates based on marital status.
+              </div>
+              <div class="error-text">
+                Please select your marital status.
+              </div>
+            </div>
+          </div>
+
+          <!-- STEP 6 -->
+          <div class="form-step" data-step="6">
+            <div class="field-group">
+              <label for="homeowner">Are you a homeowner?</label>
+              <div class="input-wrapper">
+                <select id="homeowner" name="homeowner" required>
+                  <option value="">Select an option</option>
+                  <option value="yes">Yes, I own my home</option>
+                  <option value="no">No, I rent or live with family</option>
+                </select>
+                <span class="input-icon">🏡</span>
+              </div>
+              <div class="helper">
+                Bundling home and auto can unlock extra savings in some cases.
+              </div>
+              <div class="error-text">
+                Please let us know if you’re a homeowner.
+              </div>
+            </div>
+
+            <div class="field-group">
+              <label for="employment">What is your employment status?</label>
+              <div class="input-wrapper">
+                <select id="employment" name="employment" required>
+                  <option value="">Select your status</option>
+                  <option value="retired">Retired</option>
+                  <option value="full-time">Employed full-time</option>
+                  <option value="part-time">Employed part-time</option>
+                  <option value="self-employed">Self-employed</option>
+                  <option value="unemployed">Not currently working</option>
+                </select>
+                <span class="input-icon">💼</span>
+              </div>
+              <div class="helper">
+                Many drivers 65+ are retired – that’s completely okay.
+              </div>
+              <div class="error-text">
+                Please select your employment status.
+              </div>
+            </div>
+          </div>
+
+          <!-- STEP 7: FULL NAME + PHONE + EMAIL -->
+          <div class="form-step" data-step="7">
+            <div class="field-group">
+              <label for="full-name">Full Name</label>
+              <div class="input-wrapper">
+                <input
+                  id="full-name"
+                  name="fullName"
+                  type="text"
+                  placeholder="e.g. John A. Smith"
+                  required
+                />
+                <span class="input-icon">🧾</span>
+              </div>
+              <div class="helper">
+                Please enter your legal name as it appears on your ID.
+              </div>
+              <div class="error-text">
+                Please enter your full name.
+              </div>
+            </div>
+
+            <div class="field-group">
+              <label for="phone">Phone Number (U.S.)</label>
+              <div class="input-wrapper">
+                <input
+                  id="phone"
+                  name="phone"
+                  type="tel"
+                  inputmode="tel"
+                  placeholder="e.g. (555) 123-4567"
+                  required
+                />
+                <span class="input-icon">📞</span>
+              </div>
+              <div class="helper">
+                U.S. number where a licensed agent could reach you about your quote.
+              </div>
+              <div class="error-text">
+                Please enter a valid phone number.
+              </div>
+            </div>
+
+            <div class="field-group">
+              <label for="email">Email Address</label>
+              <div class="input-wrapper">
+                <input
+                  id="email"
+                  name="email"
+                  type="email"
+                  inputmode="email"
+                  placeholder="e.g. you@example.com"
+                  required
+                />
+                <span class="input-icon">✉️</span>
+              </div>
+              <div class="helper">
+                We may send your quote details and confirmation to this email.
+              </div>
+              <div class="error-text">
+                Please enter a valid email address.
+              </div>
+            </div>
+          </div>
+
+          <!-- STEP 8: BIRTH DATE -->
+          <div class="form-step" data-step="8">
+            <div class="field-group">
+              <label for="birth-date">What is your birth date?</label>
+              <div class="input-wrapper">
+                <input
+                  id="birth-date"
+                  name="birthDate"
+                  type="date"
+                  required
+                />
+                <span class="input-icon">🎂</span>
+              </div>
+              <div class="helper">
+                Drivers 65+ may unlock special senior-friendly rates.
+              </div>
+              <div class="error-text">
+                Please provide your date of birth.
+              </div>
+            </div>
+
+            <div class="helper">
+              This demo sends your answers to your configured webhook endpoint
+              so you can process them securely on your side.
+            </div>
+          </div>
+
+          <button class="btn-primary btn-submit" type="button" id="next-btn">
+            Continue
+          </button>
+          <button class="btn-primary btn-back" type="button" id="back-btn">
+            ← Back to previous step
+          </button>
+
+          <div class="status-box" id="status-box">
+            <strong>Status:</strong> Waiting for your basic details to start
+            your secure senior auto insurance check.
+          </div>
+
+          <div class="trust-row">
+            <span>
+              <span class="trust-dot"></span>
+              Recommended secure connection (HTTPS)
+            </span>
+            <span>•</span>
+            <span>Data processed according to strict privacy rules</span>
+          </div>
+
+          <div class="policies">
+            <div class="policies-text">
+              Any information you enter in a real environment should be processed
+              on secure servers, <strong>encrypted and protected</strong> in line
+              with the applicable <a href="#">Privacy Policy</a> and
+              <a href="#">Data Protection Policy</a>.
+            </div>
+
+            <div class="logos-row">
+              <div class="logo-chip">
+                <div class="mini-logo">TLS</div>
+                SSL/TLS Ready
+              </div>
+              <div class="logo-chip">
+                <div class="mini-logo grey">DP</div>
+                Data Protection
+              </div>
+              <div class="logo-chip">
+                <div class="mini-logo green">✓</div>
+                Encrypted Data
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <!-- Hero -->
+    <section class="hero-section">
+      <h1 class="hero-title">
+        <span>Drivers 65+ With a Car:</span>
+        <span class="hero-highlight">Check Your Auto Insurance in Minutes</span>
+      </h1>
+
+      <p class="hero-subtitle">
+        If you’re <strong>65 or older</strong> and still paying full price for
+        car insurance, you may be leaving money on the table. Answer a few
+        simple questions to see if you could qualify for
+        <strong>lower, senior-friendly rates</strong> — without changing the
+        way you drive.
+      </p>
+
+      <div class="rating-row">
+        <div class="rating-icon">★</div>
+        <span><strong>4.9 / 5</strong> senior drivers feel more protected</span>
+        <div class="avatars">
+          <div class="avatar"></div>
+          <div class="avatar"></div>
+          <div class="avatar"></div>
+          <div class="avatar-count">+9k</div>
+        </div>
+      </div>
+
+      <div class="security-banner">
+        <div class="security-icon">
+          <div class="lock-symbol"></div>
+        </div>
+        <div class="security-text">
+          <h3>Secure, senior-friendly insurance experience</h3>
+          <p>
+            This interface is designed to plug into secure servers that store
+            your information <strong>encrypted</strong> and follow best-in-class
+            security practices, so you can focus on peace of mind — not fine print.
+          </p>
+        </div>
+      </div>
+
+      <!-- REVIEWS -->
+      <div class="reviews-section">
+        <div class="reviews-title">What drivers 65+ are saying</div>
+        <div class="reviews-grid">
+          <!-- Review 1 -->
+          <div class="review-card">
+            <div class="review-header">
+              <div class="review-avatar">
+                <img src="https://i.postimg.cc/DfGkrsfy/Whats-App-Image-2025-12-25-at-19-19-53.jpg" alt="Happy senior driver review 1" />
+              </div>
+              <div>
+                <div class="review-name">James W., 72</div>
+                <div class="review-meta">Saved on his SUV policy</div>
+                <div class="review-stars">★★★★★</div>
+              </div>
+            </div>
+            <div class="review-text">
+              “I thought changing my auto insurance at my age would be a hassle.
+              <strong>In a few minutes I saw options that finally made sense</strong>.
+              I feel protected and I’m paying less every month.”
+            </div>
+          </div>
+
+          <!-- Review 2 -->
+          <div class="review-card">
+            <div class="review-header">
+              <div class="review-avatar">
+                <img src="https://i.postimg.cc/JhjZ3PFc/Whats-App-Image-2025-12-25-at-19-15-01.jpg" alt="Happy senior driver review 2" />
+              </div>
+              <div>
+                <div class="review-name">Linda S., 68</div>
+                <div class="review-meta">Retired, still driving daily</div>
+                <div class="review-stars">★★★★★</div>
+              </div>
+            </div>
+            <div class="review-text">
+              “For years I just renewed without thinking. Here I finally saw
+              <strong>clear information, no pressure</strong> and a quote that respected
+              my budget as a retiree.”
+            </div>
+          </div>
+
+          <!-- Review 3 -->
+          <div class="review-card">
+            <div class="review-header">
+              <div class="review-avatar">
+                <img src="https://i.postimg.cc/Kc0qg8Bj/videoframe-991.png" alt="Happy senior driver review 3" />
+              </div>
+              <div>
+                <div class="review-name">Robert & Carol, 70 & 67</div>
+                <div class="review-meta">Two cars, one senior-friendly plan</div>
+                <div class="review-stars">★★★★★</div>
+              </div>
+            </div>
+            <div class="review-text">
+              “We wanted something simple and safe for both of our cars.
+              <strong>Now we understand exactly what we’re paying for</strong> and
+              we feel our family is better protected on the road.”
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div>
+      © 2025 InsuranceAutoCar. Your answers may be sent to your connected
+      integration (e.g. webhook) for processing.
+    </div>
+    <div>
+      <a href="#">Legal notice</a> ·
+      <a href="#">Cookies policy</a> ·
+      <a href="#">Privacy preferences</a>
+    </div>
+  </footer>
+
+  <!-- Snackbar -->
+  <div class="snackbar" id="snackbar">
+    <div class="snackbar-icon" id="snackbar-icon">✓</div>
+    <span id="snackbar-text"></span>
+  </div>
+
+  <script>
+    const form = document.getElementById("insurance-form");
+    const steps = Array.from(document.querySelectorAll(".form-step"));
+    const stepIndicator = document.getElementById("step-indicator");
+    const statusBox = document.getElementById("status-box");
+    const nextBtn = document.getElementById("next-btn");
+    const backBtn = document.getElementById("back-btn");
+
+    const snackbar = document.getElementById("snackbar");
+    const snackbarText = document.getElementById("snackbar-text");
+    const snackbarIcon = document.getElementById("snackbar-icon");
+
+    const yearSelect = document.getElementById("year");
+    const makeSelect = document.getElementById("make");
+    const modelLabel = document.getElementById("model-label");
+
+    let currentStep = 0;
+    const totalSteps = steps.length;
+
+    const WEBHOOK_URL = "https://hooks.zapier.com/hooks/catch/20702921/ua7kjda/";
+
+    // Populate vehicle years 1987–2025
+    (function fillYears() {
+      const start = 1987;
+      const end = 2025;
+      for (let y = end; y >= start; y--) {
+        const opt = document.createElement("option");
+        opt.value = y;
+        opt.textContent = y;
+        yearSelect.appendChild(opt);
+      }
+    })();
+
+    // Dynamic model label based on make
+    makeSelect.addEventListener("change", () => {
+      const make = makeSelect.value || "your vehicle";
+      modelLabel.textContent = `What is the model of your ${make}?`;
+    });
+
+    function showSnackbar(message, type = "success") {
+      snackbarText.textContent = message;
+
+      if (type === "error") {
+        snackbar.classList.add("error");
+        snackbarIcon.textContent = "!";
+      } else {
+        snackbar.classList.remove("error");
+        snackbarIcon.textContent = "✓";
+      }
+
+      snackbar.classList.add("show");
+      setTimeout(() => {
+        snackbar.classList.remove("show");
+      }, 3200);
+    }
+
+    function updateStepIndicator() {
+      stepIndicator.textContent = `Step ${currentStep + 1} of ${totalSteps} · ${
+        currentStep === 0
+          ? "Start with your vehicle details"
+          : currentStep === 1
+          ? "Tell us more about your car"
+          : currentStep === 2
+          ? "Your current policy details"
+          : currentStep === 3
+          ? "Coverage and provider information"
+          : currentStep === 4
+          ? "A bit about you"
+          : currentStep === 5
+          ? "Home & work situation"
+          : currentStep === 6
+          ? "Your contact details"
+          : "Confirm your age to check senior options"
+      }`;
+    }
+
+    function showStep(index) {
+      steps.forEach((step, i) => {
+        step.classList.toggle("active", i === index);
+      });
+      currentStep = index;
+      updateStepIndicator();
+
+      if (currentStep === 0) {
+        backBtn.style.display = "none";
+      } else {
+        backBtn.style.display = "inline-flex";
+      }
+
+      if (currentStep === totalSteps - 1) {
+        nextBtn.textContent = "See My Savings";
+      } else {
+        nextBtn.textContent = "Continue";
+      }
+    }
+
+    function validateZip(value) {
+      return /^[0-9]{5}$/.test(value.trim());
+    }
+
+    function validateEmail(value) {
+      return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value.trim());
+    }
+
+    function validatePhone(value) {
+      // Muy flexible: solo comprueba que tenga entre 7 y 15 dígitos
+      const digits = value.replace(/\D/g, "");
+      return digits.length >= 7 && digits.length <= 15;
+    }
+
+    function validateStep(index) {
+      let valid = true;
+      const step = steps[index];
+
+      const fields = step.querySelectorAll("input, select");
+      fields.forEach((field) => {
+        const wrapper = field.closest(".field-group");
+        const errorText = wrapper ? wrapper.querySelector(".error-text") : null;
+
+        field.classList.remove("error");
+        if (errorText) errorText.style.display = "none";
+
+        if (!field.hasAttribute("required")) return;
+
+        const value = field.value;
+
+        if (field.id === "zip") {
+          if (!validateZip(value)) {
+            valid = false;
+            field.classList.add("error");
+            if (errorText) errorText.style.display = "block";
+          }
+        } else if (field.id === "email") {
+          if (!validateEmail(value)) {
+            valid = false;
+            field.classList.add("error");
+            if (errorText) errorText.style.display = "block";
+          }
+        } else if (field.id === "phone") {
+          if (!validatePhone(value)) {
+            valid = false;
+            field.classList.add("error");
+            if (errorText) errorText.style.display = "block";
+          }
+        } else if (!value) {
+          valid = false;
+          field.classList.add("error");
+          if (errorText) errorText.style.display = "block";
+        }
+      });
+
+      if (!valid) {
+        statusBox.innerHTML =
+          "<strong>Status:</strong> Please review the highlighted fields to continue your secure check.";
+        showSnackbar(
+          "There are errors in this step. Please fix them to continue.",
+          "error"
+        );
+      }
+
+      return valid;
+    }
+
+    function gatherFormData() {
+      const formData = new FormData(form);
+      const data = {};
+
+      formData.forEach((value, key) => {
+        data[key] = value;
+      });
+
+      data.submissionTimestamp = new Date().toISOString();
+      data.userAgent = navigator.userAgent;
+      data.pageUrl = window.location.href;
+
+      return data;
+    }
+
+    // Envío tipo "URI component" sin CORS complicado
+    async function sendToWebhook(payload) {
+      try {
+        const params = new URLSearchParams();
+        Object.keys(payload).forEach((key) => {
+          if (payload[key] !== undefined && payload[key] !== null) {
+            params.append(key, payload[key]);
+          }
+        });
+
+        const url = WEBHOOK_URL + "?" + params.toString();
+
+        await fetch(url, {
+          method: "GET",
+          mode: "no-cors"
+        });
+
+        return true;
+      } catch (error) {
+        console.error("Error sending data to webhook (GET no-cors):", error);
+        return false;
+      }
+    }
+
+    function simulateResult(successWebhook) {
+      const approved = Math.random() > 0.35;
+
+      if (!successWebhook) {
+        statusBox.innerHTML =
+          "<strong>Status:</strong> Your answers were collected, but we couldn’t reach the quote service right now. You can try again in a moment.";
+        showSnackbar(
+          "We saved your answers locally, but could not finalize the quote call.",
+          "error"
+        );
+        return;
+      }
+
+      if (approved) {
+        statusBox.innerHTML =
+          "<strong>Status:</strong> You may qualify for senior-friendly rates. A licensed agent could review your answers and help finalize your quote.";
+        showSnackbar(
+          "Great news! Your information was sent securely and you may qualify for lower, senior-friendly auto rates."
+        );
+      } else {
+        statusBox.innerHTML =
+          "<strong>Status:</strong> Your answers suggest a manual review may be best. A specialist could look at your situation in more detail.";
+        showSnackbar(
+          "Thanks! Your information was sent securely and would typically be reviewed by a specialist.",
+          "success"
+        );
+      }
+    }
+
+    nextBtn.addEventListener("click", async () => {
+      if (!validateStep(currentStep)) return;
+
+      if (currentStep < totalSteps - 1) {
+        showStep(currentStep + 1);
+        statusBox.innerHTML =
+          "<strong>Status:</strong> Keep going — just a few more quick questions to check your options.";
+        return;
+      }
+
+      const payload = gatherFormData();
+      statusBox.innerHTML =
+        "<strong>Status:</strong> Sending your information securely to check your senior auto insurance options...";
+      nextBtn.disabled = true;
+      backBtn.disabled = true;
+
+      const ok = await sendToWebhook(payload);
+
+      nextBtn.disabled = false;
+      backBtn.disabled = false;
+
+      simulateResult(ok);
+    });
+
+    backBtn.addEventListener("click", () => {
+      if (currentStep > 0) {
+        showStep(currentStep - 1);
+        statusBox.innerHTML =
+          "<strong>Status:</strong> You can adjust your previous answers before continuing.";
+      }
+    });
+
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+    });
+
+    showStep(0);
+  </script>
+</body>
+</html>
