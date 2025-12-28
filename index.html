@@ -1467,35 +1467,47 @@
       }
     }
 
+    
+
     function simulateResult(successWebhook) {
-      const approved = Math.random() > 0.35;
+  const approved = Math.random() > 0.35;
 
-      if (!successWebhook) {
-        statusBox.innerHTML =
-          "<strong>Status:</strong> Your answers were collected, but we couldn’t reach the quote service right now. You can try again in a moment.";
-        showSnackbar(
-          "We saved your answers locally, but could not finalize the quote call.",
-          "error"
-        );
-        return;
-      }
+  if (!successWebhook) {
+    statusBox.innerHTML =
+      "<strong>Status:</strong> Your answers were collected, but we couldn’t reach the quote service right now. You can try again in a moment.";
+    showSnackbar(
+      "We saved your answers locally, but could not finalize the quote call.",
+      "error"
+    );
+    return;
+  }
 
-      if (approved) {
-        statusBox.innerHTML =
-          "<strong>Status:</strong> You may qualify for senior-friendly rates. A licensed agent could review your answers and help finalize your quote.";
-        showSnackbar(
-          "Great news! Your information was sent securely and you may qualify for lower, senior-friendly auto rates."
-        );
-      } else {
-        statusBox.innerHTML =
-          "<strong>Status:</strong> Your answers suggest a manual review may be best. A specialist could look at your situation in more detail.";
-        showSnackbar(
-          "Thanks! Your information was sent securely and would typically be reviewed by a specialist.",
-          "success"
-        );
-      }
-    }
+  // 🔔 TABOOLA LEAD EVENT: se dispara cuando el envío al webhook fue OK
+  if (window._tfa) {
+    window._tfa.push({
+      notify: "event",
+      name: "lead", // evento Lead de Taboola
+      id: 1970033   // mismo ID que tu pixel
+    });
+  }
 
+  if (approved) {
+    statusBox.innerHTML =
+      "<strong>Status:</strong> You may qualify for senior-friendly rates. A licensed agent could review your answers and help finalize your quote.";
+    showSnackbar(
+      "Great news! Your information was sent securely and you may qualify for lower, senior-friendly auto rates."
+    );
+  } else {
+    statusBox.innerHTML =
+      "<strong>Status:</strong> Your answers suggest a manual review may be best. A specialist could look at your situation in more detail.";
+    showSnackbar(
+      "Thanks! Your information was sent securely and would typically be reviewed by a specialist.",
+      "success"
+    );
+  }
+}
+
+    
     nextBtn.addEventListener("click", async () => {
       if (!validateStep(currentStep)) return;
 
@@ -1534,5 +1546,19 @@
 
     showStep(0);
   </script>
+  <!-- Taboola Pixel Code -->
+<script type='text/javascript'>
+  window._tfa = window._tfa || [];
+  window._tfa.push({notify: 'event', name: 'page_view', id: 1970033});
+  !function (t, f, a, x) {
+         if (!document.getElementById(x)) {
+            t.async = 1;t.src = a;t.id=x;f.parentNode.insertBefore(t, f);
+         }
+  }(document.createElement('script'),
+  document.getElementsByTagName('script')[0],
+  '//cdn.taboola.com/libtrc/unip/1970033/tfa.js',
+  'tb_tfa_script');
+</script>
+<!-- End of Taboola Pixel Code -->
 </body>
 </html>
